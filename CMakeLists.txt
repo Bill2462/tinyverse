@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.9)
 
-project(Tinyverse)
+project(Tinyverse CXX)
 
 set(EXECUTABLE_NAME tinyverse)
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
-set(OpenGL_GL_PREFERENCE GLVND)
+
 configure_file(
   "src/config.h.in"
   "${PROJECT_BINARY_DIR}/config.h"
@@ -13,18 +13,34 @@ configure_file(
 
 set(SOURCES
     src/main.cpp
-    src/log/log.cpp
+    src/app/app.cpp
+    src/app/draw.cpp
+    src/app/events.cpp
 )
 
 find_package(spdlog REQUIRED)
-find_package(SFML 2.0 REQUIRED window graphics)
-find_package(OpenGL REQUIRED)
+find_package(Corrade REQUIRED Main)
+find_package(Magnum REQUIRED GL
+  MeshTools
+  Primitives
+  Shaders
+  Sdl2Application
+)
+
+set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 include_directories(src)
 include_directories("${PROJECT_BINARY_DIR}")
-include_directories(${OPENGL_INCLUDE_DIR})
-
 add_executable(${EXECUTABLE_NAME} ${SOURCES})
-target_link_libraries(${EXECUTABLE_NAME} sfml-window sfml-graphics)
+
+target_link_libraries(${EXECUTABLE_NAME}
+  Corrade::Main
+  Magnum::Application
+  Magnum::GL
+  Magnum::Magnum
+  Magnum::MeshTools
+  Magnum::Primitives
+  Magnum::Shaders
+)
+
 target_link_libraries(${EXECUTABLE_NAME} spdlog::spdlog)
-target_link_libraries(${EXECUTABLE_NAME} ${OPENGL_LIBRARIES} m)
