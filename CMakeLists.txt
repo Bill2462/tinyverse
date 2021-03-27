@@ -11,13 +11,6 @@ configure_file(
   "${PROJECT_BINARY_DIR}/config.h"
 )
 
-set(SOURCES
-    src/main.cpp
-    src/app/app.cpp
-    src/app/draw.cpp
-    src/app/events.cpp
-    src/universe/universe.cpp
-)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(spdlog REQUIRED)
@@ -28,6 +21,20 @@ find_package(Magnum REQUIRED
   Primitives
   Shaders
   Sdl2Application
+)
+
+corrade_add_resource(RESOURCES_CONFIG src/resources.conf)
+
+set(SOURCES
+    src/main.cpp
+    src/app/app.cpp
+    src/app/draw.cpp
+    src/app/events.cpp
+    src/universe/universe.cpp
+    src/renderer/particle_renderer.cpp
+    src/renderer/draw_particles.cpp
+    src/shaders/particle_shader.cpp
+    ${RESOURCES_CONFIG}
 )
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
