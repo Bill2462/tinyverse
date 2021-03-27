@@ -16,11 +16,14 @@ set(SOURCES
     src/app/app.cpp
     src/app/draw.cpp
     src/app/events.cpp
+    src/universe/universe.cpp
 )
 
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(spdlog REQUIRED)
 find_package(Corrade REQUIRED Main)
-find_package(Magnum REQUIRED GL
+find_package(Magnum REQUIRED
+  GL
   MeshTools
   Primitives
   Shaders
@@ -31,6 +34,8 @@ set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 include_directories(src)
 include_directories("${PROJECT_BINARY_DIR}")
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 add_executable(${EXECUTABLE_NAME} ${SOURCES})
 
 target_link_libraries(${EXECUTABLE_NAME}
@@ -44,3 +49,4 @@ target_link_libraries(${EXECUTABLE_NAME}
 )
 
 target_link_libraries(${EXECUTABLE_NAME} spdlog::spdlog)
+target_link_libraries(${EXECUTABLE_NAME} Eigen3::Eigen)
