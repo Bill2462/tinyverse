@@ -28,9 +28,9 @@ namespace universe
 
     struct RandomInitializerConfig
     {
-       std::pair<double, double> position_range;
-       std::pair<double, double> velocity_range;
-       std::pair<double, double> mass_range;
+       std::pair<Real, Real> position_range;
+       std::pair<Real, Real> velocity_range;
+       std::pair<Real, Real> mass_range;
     };
     
     void random_universe_initializer(Universe& universe, const RandomInitializerConfig& config);

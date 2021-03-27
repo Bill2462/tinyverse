@@ -26,6 +26,6 @@ const RandomInitializerConfig& config)
             universe.position(i, k) = pos_dist(gen);
             universe.velocity(i, k) = vel_dist(gen);
         }
-        universe.mass(i, 0) = mass_dist(gen);
+        universe.mass(i) = mass_dist(gen);
     }
 }
