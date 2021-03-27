@@ -32,7 +32,6 @@ set(SOURCES
     src/app/events.cpp
     src/universe/universe.cpp
     src/renderer/particle_renderer.cpp
-    src/renderer/draw_particles.cpp
     src/shaders/particle_shader.cpp
     ${RESOURCES_CONFIG}
 )
