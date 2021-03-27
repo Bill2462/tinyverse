@@ -13,17 +13,13 @@ using namespace Math::Literals;
 
 void TinyverseApp::drawEvent()
 {
-    GL::defaultFramebuffer.clear(
-        GL::FramebufferClear::Color | GL::FramebufferClear::Depth);
-    
-    Containers::ArrayView<const Vector3> directions;
-    shader.setLightPosition({7.0f, 5.0f, 2.5f});
-    shader.setLightColor(Color3{1.0f});
-    shader.setDiffuseColor(color);
-    shader.setTransformationMatrix(transformation);
-    shader.setNormalMatrix(transformation.normalMatrix());
-    shader.setProjectionMatrix(projection);
-    shader.draw(mesh);
+    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color | 
+    GL::FramebufferClear::Depth);
+
+    particle_renderer->update_displayed_particles();
+    particle_renderer->draw_particles(camera, framebufferSize());
+    camera->draw(*drawable_group);
 
     swapBuffers();
+    redraw();
 }
