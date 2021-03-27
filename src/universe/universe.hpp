@@ -6,6 +6,7 @@
 #include <eigen3/Eigen/Dense>
 #include <memory>
 #include <utility>
+#include "common_types.hpp"
 
 namespace universe
 {
@@ -20,9 +21,9 @@ namespace universe
         };
 
         size_t nbody;
-        Eigen::MatrixXd position;
-        Eigen::MatrixXd velocity;
-        Eigen::MatrixXd mass;
+        Vectors3D position;
+        Vectors3D velocity;
+        Vector mass;
     };
 
     struct RandomInitializerConfig
@@ -32,7 +33,7 @@ namespace universe
        std::pair<double, double> mass_range;
     };
     
-    void random_universe_initializer(Universe& universe, RandomInitializerConfig config);
+    void random_universe_initializer(Universe& universe, const RandomInitializerConfig& config);
 }
 
 #endif

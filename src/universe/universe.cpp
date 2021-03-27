@@ -5,18 +5,18 @@
 using namespace universe;
 
 void universe::random_universe_initializer(Universe& universe,
-RandomInitializerConfig config)
+const RandomInitializerConfig& config)
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 gen(seed);
 
-    std::uniform_real_distribution<double> pos_dist(config.position_range.first,
+    std::uniform_real_distribution<Real> pos_dist(config.position_range.first,
     config.position_range.second);
 
-    std::uniform_real_distribution<double> vel_dist(config.velocity_range.first,
+    std::uniform_real_distribution<Real> vel_dist(config.velocity_range.first,
     config.velocity_range.second);
 
-    std::uniform_real_distribution<double> mass_dist(config.mass_range.first,
+    std::uniform_real_distribution<Real> mass_dist(config.mass_range.first,
     config.mass_range.second);
 
     for(size_t i=0; i<universe.nbody; i++)
