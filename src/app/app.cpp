@@ -73,24 +73,27 @@ Platform::Application{arguments, NoCreate}
     last_depth = ((camera->projectionMatrix() * camera->cameraMatrix()).transformPoint({}).z() + 1.0f) * 0.5f;
 
     spdlog::debug("Initializing universe...");
-    const size_t n_body = 1000;
+    const size_t n_body = 10000;
     universe.set_size(n_body);
 
     universe::RandomInitializerConfig universe_initializer_config;
     universe_initializer_config.mass_range = {1, 10};
-    universe_initializer_config.position_range = {-10, 10};
+    universe_initializer_config.position_range = {-20, 20};
     universe_initializer_config.velocity_range = {0, 0};
     universe::random_universe_initializer(universe, universe_initializer_config);
     
     spdlog::debug("Initializing renderer...");
     particle_renderer.reset(new ParticleRenderer(universe.position.data(), n_body));
+    ParticleRenderer::Settings renderer_settings = particle_renderer->get_settings();
+    renderer_settings.particle_radius = 0.1;
+    renderer_settings.color_mode = ParticleShader::ColorMode::CONSISTENT_RADOM;
+    particle_renderer->set_settings(renderer_settings);
 
     // Enable depth test, render particles as sprites.
     GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
     GL::Renderer::enable(GL::Renderer::Feature::ProgramPointSize);
 
     // Start the timer, loop at 60 Hz max.
-    setSwapInterval(1);
     setMinimalLoopPeriod(16);
 }
 
