@@ -5,6 +5,8 @@
 
 // Matrix for storing a sequence of 3D vectors.
 typedef Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor> Vectors3D;
+
+// Vector of numbers.
 typedef Eigen::Matrix<float, Eigen::Dynamic, 1> Vector;
 
 // Real number used through the simulation.

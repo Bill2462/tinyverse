@@ -1,7 +1,7 @@
 #ifndef PARTICLE_RENDERER_H_INCLUDED
 #define PARTICLE_RENDERER_H_INCLUDED
 
-#include "common_types.hpp"
+#include "physics/common_types.hpp"
 #include "shaders/particle_shader.hpp"
 #include <Corrade/Containers/Pointer.h>
 #include <Magnum/GL/Buffer.h>

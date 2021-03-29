@@ -7,11 +7,10 @@
 #include <Magnum/GL/PixelFormat.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/FunctionsBatch.h>
-
 #include <spdlog/spdlog.h>
-
 #include "app.hpp"
 #include "config.h"
+#include "physics/universe_initializers.hpp"
 
 const char* BANNER = "\n"
 "d888888P oo                                                                \n"
@@ -76,11 +75,11 @@ Platform::Application{arguments, NoCreate}
     const size_t n_body = 10000;
     universe.set_size(n_body);
 
-    universe::RandomInitializerConfig universe_initializer_config;
+    RandomInitializerConfig universe_initializer_config;
     universe_initializer_config.mass_range = {1, 10};
     universe_initializer_config.position_range = {-20, 20};
     universe_initializer_config.velocity_range = {0, 0};
-    universe::random_universe_initializer(universe, universe_initializer_config);
+    random_universe_initializer(universe, universe_initializer_config);
     
     spdlog::debug("Initializing renderer...");
     particle_renderer.reset(new ParticleRenderer(universe.position.data(), n_body));

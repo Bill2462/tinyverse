@@ -1,11 +1,8 @@
-#include "universe.hpp"
+#include "physics/universe_initializers.hpp"
 #include <chrono>
 #include <random>
 
-using namespace universe;
-
-void universe::random_universe_initializer(Universe& universe,
-const RandomInitializerConfig& config)
+void random_universe_initializer(Universe& universe, const RandomInitializerConfig& config)
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 gen(seed);

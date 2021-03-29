@@ -31,9 +31,9 @@ set(SOURCES
     src/app/app.cpp
     src/app/draw.cpp
     src/app/events.cpp
-    src/universe/universe.cpp
     src/renderer/particle_renderer.cpp
     src/shaders/particle_shader.cpp
+    src/physics/universe_initializers/random_initializers.cpp
     ${RESOURCES_CONFIG}
 )
 
