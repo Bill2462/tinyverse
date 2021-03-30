@@ -71,20 +71,21 @@ Platform::Application{arguments, NoCreate}
     /* Initialize depth to the value at scene center */
     last_depth = ((camera->projectionMatrix() * camera->cameraMatrix()).transformPoint({}).z() + 1.0f) * 0.5f;
 
-    const size_t n_body = 1000;
+    const size_t n_body = 2;
     universe.set_size(n_body);
-    auto initializer = std::make_shared<RandomInitializer>();
-    RandomInitializer::Config universe_initializer_config;
-    universe_initializer_config.position_range = {-10, 10};
-    universe_initializer_config.mass_range = {0, 20};
-    universe_initializer_config.zero_mass = false;
+    auto initializer = std::make_shared<TwoBodyInitializer>();
+    TwoBodyInitializer::Config universe_initializer_config;
+    universe_initializer_config.body1_mass = 1000;
+    universe_initializer_config.body2_mass = 0.1;
+    universe_initializer_config.body2_position = {0, 0, 0.5};
+    universe_initializer_config.body2_velocity = {0, 50, 0};
     initializer->set_config(universe_initializer_config);
     universe.apply_initializer(initializer);
     
     spdlog::debug("Initializing renderer...");
     particle_renderer.reset(new ParticleRenderer(universe.get_positions().data(), n_body));
     ParticleRenderer::Settings renderer_settings = particle_renderer->get_settings();
-    renderer_settings.particle_radius = 0.2;
+    renderer_settings.particle_radius = 0.1;
     renderer_settings.color_mode = ParticleShader::ColorMode::CONSISTENT_RADOM;
     particle_renderer->set_settings(renderer_settings);
 

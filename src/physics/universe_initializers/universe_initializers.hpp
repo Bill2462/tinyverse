@@ -2,5 +2,6 @@
 #define UNIVERSE_INITIALIZERS_HPP_INCLUDED
 
 #include "random/random_initializer.hpp"
+#include "systems/two_body.hpp"
 
 #endif

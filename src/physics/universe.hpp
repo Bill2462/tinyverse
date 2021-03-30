@@ -12,7 +12,7 @@ class Universe
 public:
     struct SimulationConfig
     {
-        Real timestep = 0.001;
+        Real timestep = 0.0001;
         Real G = 1;
     };
 
@@ -43,7 +43,7 @@ private:
     void update_integrator();
 
     SimulationConfig sim_config;
-    double sim_time = 0; // Current timestamp of the simulation.
+    Real sim_time = 0; // Current timestamp of the simulation.
     size_t size = 0;
     Vectors3D position;
     Vectors3D velocity;

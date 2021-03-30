@@ -35,6 +35,7 @@ set(SOURCES
     src/shaders/particle_shader.cpp
     src/physics/universe.cpp
     src/physics/universe_initializers/random/random_initializer.cpp
+    src/physics/universe_initializers/systems/two_body.cpp
     src/physics/n-body/gravity.cpp
     src/physics/n-body/integrator.cpp
     ${RESOURCES_CONFIG}
