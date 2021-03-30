@@ -10,7 +10,7 @@
 #include <spdlog/spdlog.h>
 #include "app.hpp"
 #include "config.h"
-#include "physics/universe_initializers.hpp"
+#include "physics/universe_initializers/universe_initializers.hpp"
 
 const char* BANNER = "\n"
 "d888888P oo                                                                \n"
@@ -71,18 +71,16 @@ Platform::Application{arguments, NoCreate}
     /* Initialize depth to the value at scene center */
     last_depth = ((camera->projectionMatrix() * camera->cameraMatrix()).transformPoint({}).z() + 1.0f) * 0.5f;
 
-    spdlog::debug("Initializing universe...");
     const size_t n_body = 10000;
     universe.set_size(n_body);
-
-    RandomInitializerConfig universe_initializer_config;
-    universe_initializer_config.mass_range = {1, 10};
+    auto initializer = std::make_shared<RandomInitializer>();
+    RandomInitializer::Config universe_initializer_config;
     universe_initializer_config.position_range = {-20, 20};
-    universe_initializer_config.velocity_range = {0, 0};
-    random_universe_initializer(universe, universe_initializer_config);
+    initializer->set_config(universe_initializer_config);
+    universe.apply_initializer(initializer);
     
     spdlog::debug("Initializing renderer...");
-    particle_renderer.reset(new ParticleRenderer(universe.position.data(), n_body));
+    particle_renderer.reset(new ParticleRenderer(universe.positions().data(), n_body));
     ParticleRenderer::Settings renderer_settings = particle_renderer->get_settings();
     renderer_settings.particle_radius = 0.1;
     renderer_settings.color_mode = ParticleShader::ColorMode::CONSISTENT_RADOM;
