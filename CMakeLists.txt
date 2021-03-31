@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.9)
 
 project(Tinyverse CXX)
+set(CMAKE_CXX_STANDARD 17)
 
+option(BUILD_TESTS OFF)
 set(EXECUTABLE_NAME tinyverse)
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
@@ -10,7 +12,6 @@ configure_file(
   "src/config.h.in"
   "${PROJECT_BINARY_DIR}/config.h"
 )
-
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(spdlog REQUIRED)
@@ -33,11 +34,6 @@ set(SOURCES
     src/app/events.cpp
     src/renderer/particle_renderer.cpp
     src/shaders/particle_shader.cpp
-    src/physics/universe.cpp
-    src/physics/universe_initializers/random/random_initializer.cpp
-    src/physics/universe_initializers/systems/two_body.cpp
-    src/physics/n-body/gravity.cpp
-    src/physics/n-body/integrator.cpp
     ${RESOURCES_CONFIG}
 )
 
@@ -46,6 +42,8 @@ set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 include_directories(src)
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories(${EIGEN3_INCLUDE_DIR})
+
+add_subdirectory(src/physics)
 
 add_executable(${EXECUTABLE_NAME} ${SOURCES})
 
@@ -62,3 +60,8 @@ target_link_libraries(${EXECUTABLE_NAME}
 
 target_link_libraries(${EXECUTABLE_NAME} spdlog::spdlog)
 target_link_libraries(${EXECUTABLE_NAME} Eigen3::Eigen)
+target_link_libraries(${EXECUTABLE_NAME} tiniverse_physics)
+
+if(${BUILD_TESTS})
+  add_subdirectory(tests)
+endif()
