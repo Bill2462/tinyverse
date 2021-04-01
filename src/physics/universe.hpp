@@ -12,7 +12,7 @@ class Universe
 public:
     struct SimulationConfig
     {
-        Real timestep = 0.0001;
+        Real timestep = 0.001;
         Real G = 1;
     };
 
@@ -24,30 +24,32 @@ public:
     size_t get_size() const;
 
     void set_sim_config(const SimulationConfig& config);
+    SimulationConfig get_sim_config() const;
 
     // Return a reference for accessing positions.
     const Vectors3D& get_positions() const;
+    const Vectors3D& get_velocities() const;
+    const Vector& get_masses() const;
 
     void apply_initializer(std::weak_ptr<UniverseInitializer> initializer);
     
     // Advances simulation by one timestep.
-    void advance_simulation();
+    void simulation_step();
 
     double get_simulaton_time() const;
 
 private:
-    // Function for updating gravitional forces between bodies.
-    void update_gravity();
-
-    // Advance to the next step on the leapfrog integrator.
-    void update_integrator();
+    // Pass index of the body and get forces acting on the body.
+    Vector3D<Real> compute_net_grawitational(std::size_t i);
 
     SimulationConfig sim_config;
-    Real sim_time = 0; // Current timestamp of the simulation.
+    Real sim_time = 0;
     size_t size = 0;
+
     Vectors3D position;
+    
     Vectors3D velocity;
-    Vectors3D forces;
+    Vectors3D acceleration;
     Vector mass;
 };
 

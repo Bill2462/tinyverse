@@ -76,9 +76,9 @@ Platform::Application{arguments, NoCreate}
     auto initializer = std::make_shared<TwoBodyInitializer>();
     TwoBodyInitializer::Config universe_initializer_config;
     universe_initializer_config.body1_mass = 1000;
-    universe_initializer_config.body2_mass = 0.1;
-    universe_initializer_config.body2_position = {0, 0, 0.5};
-    universe_initializer_config.body2_velocity = {0, 50, 0};
+    universe_initializer_config.body2_mass = 10;
+    universe_initializer_config.body2_position = {0, 0, 1};
+    universe_initializer_config.body2_velocity = {0, 32, 0};
     initializer->set_config(universe_initializer_config);
     universe.apply_initializer(initializer);
     

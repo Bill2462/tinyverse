@@ -5,8 +5,8 @@ set(SOURCES
     universe.cpp
     universe_initializers/random/random_initializer.cpp
     universe_initializers/systems/two_body.cpp
-    n-body/gravity.cpp
-    n-body/integrator.cpp
+    simulation/compute_grawitational_forces.cpp
+    simulation/step.cpp
 )
 
 include_directories(src)

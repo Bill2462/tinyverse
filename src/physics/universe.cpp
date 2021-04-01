@@ -11,8 +11,9 @@ void Universe::set_size(size_t n)
     size = n;
     position.resize(size, 3);
     velocity.resize(size, 3);
-    forces.resize(size, 3);
+    acceleration.resize(size, 3);
     mass.resize(size, 1);
+
     spdlog::debug(std::string("Universe size set to ") +
     std::to_string(n) + std::string("."));
 }
@@ -25,6 +26,16 @@ size_t Universe::get_size() const
 const Vectors3D& Universe::get_positions() const
 {
     return position;
+}
+
+const Vectors3D& Universe::get_velocities() const
+{
+    return velocity;
+}
+
+const Vector& Universe::get_masses() const
+{
+    return mass;
 }
 
 void Universe::apply_initializer(std::weak_ptr<UniverseInitializer> initializer)
@@ -41,6 +52,15 @@ void Universe::apply_initializer(std::weak_ptr<UniverseInitializer> initializer)
     {
         spdlog::error("Invalid initializer passed to the universe!");
     }
+    
+    // Initialize accelerations.
+    for(std::size_t i=0; i<get_size(); i++)
+    {
+        Vector3D<Real> forces = compute_net_grawitational(i);
+        acceleration(i, 0) = forces.x/mass(i);
+        acceleration(i, 1) = forces.y/mass(i);
+        acceleration(i, 2) = forces.z/mass(i);
+    }
 }
 
 void Universe::set_sim_config(const Universe::SimulationConfig& config)
@@ -48,14 +68,12 @@ void Universe::set_sim_config(const Universe::SimulationConfig& config)
     sim_config = config;
 }
 
+Universe::SimulationConfig Universe::get_sim_config() const
+{
+    return sim_config;
+}
+
 double Universe::get_simulaton_time() const
 {
     return sim_time;
-}
-
-void Universe::advance_simulation()
-{
-    update_gravity();
-    update_integrator();
-    sim_time += sim_config.timestep;
 }
