@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.9)
 project(Tinyverse CXX)
 set(CMAKE_CXX_STANDARD 17)
 
-option(BUILD_TESTS OFF)
+set(BUILD_TESTS ON)
 set(EXECUTABLE_NAME tinyverse)
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
