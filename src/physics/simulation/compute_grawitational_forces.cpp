@@ -32,7 +32,7 @@ Vector3D<Real> Universe::compute_net_grawitational(std::size_t i)
         {
             Real div = sim_config.use_softening*sim_config.use_softening + distance*distance;
             div = sqrt(div*div*div);
-            a = (mass(k)*distance)/div;
+            a = (mass(k))/div;
         }
         else
             a = mass(k)/(distance*distance*distance);
