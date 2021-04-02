@@ -17,6 +17,11 @@ int main()
     Universe universe;
     const size_t n_body = 2;
     universe.set_size(n_body);
+    
+    SimulationConfig sim_config;
+    sim_config.use_softening = false;
+    universe.set_sim_config(sim_config);
+
     auto initializer = std::make_shared<TwoBodyInitializer>();
     TwoBodyInitializerConfig universe_initializer_config;
     universe_initializer_config.body1_mass = 1000;

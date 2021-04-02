@@ -50,6 +50,13 @@ inline void _load_simulation_config(const json& config,SimulationConfig& output)
     auto cfg = config["simulation_config"];
     output.timestep = cfg["timestep"].get<Real>();
     output.G = cfg["G"].get<Real>();
+    
+    if(cfg.contains(std::string{"use_softening"}))
+        output.use_softening = cfg["use_softening"].get<bool>();
+
+    if(output.use_softening)
+        output.epsilon = cfg["epsilon"].get<Real>();
+    
     output.default_config = false;
 }
 

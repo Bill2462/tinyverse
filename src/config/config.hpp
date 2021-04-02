@@ -23,6 +23,8 @@ struct SimulationConfig
 {
     Real timestep = 0.001;
     Real G = 1;
+    bool use_softening = true;
+    Real epsilon = 2; // Coefficient used for softening of the gravity. Use in colisionless simulations.
     bool default_config = true;
 };
 

@@ -1,4 +1,5 @@
 #include "physics/universe.hpp"
+#include <cmath>
 
 Vector3D<Real> Universe::compute_net_grawitational(std::size_t i)
 {
@@ -26,8 +27,15 @@ Vector3D<Real> Universe::compute_net_grawitational(std::size_t i)
         const Real distance = distace_vec.norm2();
 
         // Compute term that will be multipled by distance vector.
-        const Real a = (mass(k))/
-        (distance*distance*distance);
+        Real a;
+        if(sim_config.use_softening)
+        {
+            Real div = sim_config.use_softening*sim_config.use_softening + distance*distance;
+            div = sqrt(div*div*div);
+            a = (mass(k)*distance)/div;
+        }
+        else
+            a = mass(k)/(distance*distance*distance);
 
         // Compute and add new force acting on the body.
         accumulated_force.x += distace_vec.x*a;
