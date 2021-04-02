@@ -1,0 +1,12 @@
+{
+    "universe_config":{
+        "initializer_type": "RANDOM_INITIALIZER",
+        "universe_size": 1000
+    },
+
+    "random_initializer_config":{
+        "velocity_range": [-10, 10],
+        "mass_range": [0.01, 10],
+        "position_range": [-10, 10] 
+    }
+}
