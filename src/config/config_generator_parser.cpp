@@ -92,6 +92,8 @@ inline void _load_random_initializer_config(const json& config, RandomInitialize
 
     if(cfg.contains(std::string{"zero_vel"}))
         output.zero_vel = cfg["zero_vel"].get<bool>();
+    else
+        output.zero_vel = false;
     
     if(!output.zero_vel)
         output.velocity_range = _parse_pair(cfg["velocity_range"]);
