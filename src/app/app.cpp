@@ -1,4 +1,6 @@
+#include <iostream>
 #include <Corrade/Utility/StlMath.h>
+#include <Corrade/Utility/Arguments.h>
 #include <Magnum/Image.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/GL/Renderer.h>
@@ -8,9 +10,10 @@
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/FunctionsBatch.h>
 #include <spdlog/spdlog.h>
+
 #include "app.hpp"
 #include "config.h"
-#include "physics/universe_initializers/universe_initializers.hpp"
+#include "config/config.hpp"
 
 const char* BANNER = "\n"
 "d888888P oo                                                                \n"
@@ -29,12 +32,28 @@ TinyverseApp::TinyverseApp(const Arguments& arguments):
 Platform::Application{arguments, NoCreate}
 {
     spdlog::set_level(spdlog::level::debug);
-    spdlog::info(BANNER);
+    std::cout<<BANNER;
     spdlog::info(std::string("Welcome to Tinyverse version ") +
                  std::to_string(PROJECT_VERSION_MAJOR) + 
                  std::string(".") +
                  std::to_string(PROJECT_VERSION_MINOR) +
                  "!");
+
+    Utility::Arguments args;
+    args.addOption('f', "config", "").setHelp("config", "Path to the configuration file.", "f")
+    .parse(arguments.argc, arguments.argv);
+
+    const std::string config_path = args.value<std::string>("config");
+    if(config_path.empty())
+        spdlog::info("No configuration file specified! Will load default simulation.");
+
+    else
+    {
+        spdlog::info(std::string("Loading configuration file '" + config_path + std::string("'...")));
+        config_gen.parse_file(config_path);
+    }
+
+    init_simulation();
 
     // Setting up window.
     spdlog::debug("Setting up window...");
@@ -70,20 +89,9 @@ Platform::Application{arguments, NoCreate}
 
     /* Initialize depth to the value at scene center */
     last_depth = ((camera->projectionMatrix() * camera->cameraMatrix()).transformPoint({}).z() + 1.0f) * 0.5f;
-
-    const size_t n_body = 2;
-    universe.set_size(n_body);
-    auto initializer = std::make_shared<TwoBodyInitializer>();
-    TwoBodyInitializer::Config universe_initializer_config;
-    universe_initializer_config.body1_mass = 1000;
-    universe_initializer_config.body2_mass = 10;
-    universe_initializer_config.body2_position = {0, 0, 1};
-    universe_initializer_config.body2_velocity = {0, 32, 0};
-    initializer->set_config(universe_initializer_config);
-    universe.apply_initializer(initializer);
     
     spdlog::debug("Initializing renderer...");
-    particle_renderer.reset(new ParticleRenderer(universe.get_positions().data(), n_body));
+    particle_renderer.reset(new ParticleRenderer(universe.get_positions().data(), universe.get_size()));
     ParticleRenderer::Settings renderer_settings = particle_renderer->get_settings();
     renderer_settings.particle_radius = 0.1;
     renderer_settings.color_mode = ParticleShader::ColorMode::CONSISTENT_RADOM;

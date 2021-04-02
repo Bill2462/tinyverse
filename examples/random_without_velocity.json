@@ -1,0 +1,6 @@
+{
+    "universe_config":{
+        "initializer_type": "RANDOM_INITIALIZER",
+        "universe_size": 10000
+    }
+}

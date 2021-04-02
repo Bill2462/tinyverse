@@ -1,21 +1,14 @@
 #ifndef UNIVERSE_HPP_INCLUDED
 #define UNIVERSE_HPP_INCLUDED
 
-#include <string>
-#include <functional>
 #include <memory>
 #include "physics/common_types.hpp"
 #include "universe_initializers/universe_initializers.hpp"
+#include "config/config.hpp"
 
 class Universe
 {
 public:
-    struct SimulationConfig
-    {
-        Real timestep = 0.001;
-        Real G = 1;
-    };
-
     Universe(){};
     Universe(size_t n);
     

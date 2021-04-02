@@ -1,7 +1,12 @@
 #include "two_body.hpp"
 #include <spdlog/spdlog.h>
 
-void TwoBodyInitializer::set_config(const Config& config)
+TwoBodyInitializer::TwoBodyInitializer(const TwoBodyInitializerConfig& config)
+{
+    set_config(config);
+}
+
+void TwoBodyInitializer::set_config(const TwoBodyInitializerConfig& config)
 {
     this->config = config;
 }

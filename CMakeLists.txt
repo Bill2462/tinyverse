@@ -13,6 +13,7 @@ configure_file(
   "${PROJECT_BINARY_DIR}/config.h"
 )
 
+find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(spdlog REQUIRED)
 find_package(Corrade REQUIRED Main)
@@ -32,8 +33,11 @@ set(SOURCES
     src/app/app.cpp
     src/app/draw.cpp
     src/app/events.cpp
+    src/app/init_sim.cpp
     src/renderer/particle_renderer.cpp
     src/shaders/particle_shader.cpp
+    src/config/config_generator.cpp
+    src/config/config_generator_parser.cpp
     ${RESOURCES_CONFIG}
 )
 
@@ -61,6 +65,7 @@ target_link_libraries(${EXECUTABLE_NAME}
 target_link_libraries(${EXECUTABLE_NAME} spdlog::spdlog)
 target_link_libraries(${EXECUTABLE_NAME} Eigen3::Eigen)
 target_link_libraries(${EXECUTABLE_NAME} tiniverse_physics)
+target_link_libraries(${EXECUTABLE_NAME} nlohmann_json::nlohmann_json)
 
 if(${BUILD_TESTS})
   add_subdirectory(tests)

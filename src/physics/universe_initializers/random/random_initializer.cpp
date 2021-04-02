@@ -7,7 +7,13 @@ RandomInitializer::RandomInitializer()
     gen.seed(seed);
 }
 
-void RandomInitializer::set_config(const Config& config)
+RandomInitializer::RandomInitializer(const RandomInitializerConfig& config)
+{
+    RandomInitializer();
+    set_config(config);
+}
+
+void RandomInitializer::set_config(const RandomInitializerConfig& config)
 {
     this->config = config;
 }
@@ -49,10 +55,7 @@ void RandomInitializer::set_mass(Vector& mass, std::size_t body_count) const
     auto dist = _uniform_dist_from_pair(config.mass_range);
     for(size_t i=0; i<body_count; i++)
     {
-        if(config.zero_mass)
-            mass(i) = 0;
-        else
-            mass(i) = dist(gen);
+        mass(i) = dist(gen);
     }
 }
 

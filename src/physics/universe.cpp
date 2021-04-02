@@ -63,12 +63,12 @@ void Universe::apply_initializer(std::weak_ptr<UniverseInitializer> initializer)
     }
 }
 
-void Universe::set_sim_config(const Universe::SimulationConfig& config)
+void Universe::set_sim_config(const SimulationConfig& config)
 {
     sim_config = config;
 }
 
-Universe::SimulationConfig Universe::get_sim_config() const
+SimulationConfig Universe::get_sim_config() const
 {
     return sim_config;
 }

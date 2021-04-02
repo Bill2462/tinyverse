@@ -4,7 +4,7 @@
 #include "physics/universe_initializers/base_initializer.hpp"
 #include "physics/common_types.hpp"
 #include "physics/vector_3D.hpp"
-
+#include "config/config.hpp"
 #include <exception>
 
 // Initializer that initializes a simple system with 2 bodies.
@@ -12,15 +12,10 @@
 class TwoBodyInitializer : public UniverseInitializer
 {
 public:
-    struct Config
-    {
-        Real body1_mass = 100;
-        Real body2_mass = 1;
-        Vector3D<Real> body2_velocity;
-        Vector3D<Real> body2_position;
-    };
-    
-    void set_config(const Config& config);
+    TwoBodyInitializer(){}
+    TwoBodyInitializer(const TwoBodyInitializerConfig& config);
+
+    void set_config(const TwoBodyInitializerConfig& config);
 
     void set_position(Vectors3D& pos, std::size_t body_count) const override;
     void set_velocity(Vectors3D& vel, std::size_t body_count) const override;
@@ -28,7 +23,7 @@ public:
     std::string get_name() const override;
 
 private:
-    Config config;
+     TwoBodyInitializerConfig config;
 };
 
 class TwoBodyInitializerException : public std::exception
