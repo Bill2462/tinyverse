@@ -7,18 +7,32 @@ RandomInitializer::RandomInitializer()
     gen.seed(seed);
 }
 
-RandomInitializer::RandomInitializer(const RandomInitializerConfig& config)
+RandomInitializer::RandomInitializer(std::weak_ptr<ConfigurationLoader> config_loader)
 {
     RandomInitializer();
-    set_config(config);
+    init(config_loader);
 }
 
-void RandomInitializer::set_config(const RandomInitializerConfig& config)
+void RandomInitializer::init(std::weak_ptr<ConfigurationLoader> config_loader)
 {
-    this->config = config;
+    if(auto ptr = config_loader.lock())
+    {
+        position_range = ptr->get_pair("initializer_config", "position_range");
+        mass_range = ptr->get_pair("initializer_config", "mass_range");
+
+        if(ptr->has_parameter("initializer_config", "zero_velocity"))
+            zero_velocity = ptr->get_bool("initializer_config", "zero_velocity");
+        else
+            zero_velocity = false;
+
+        if(!zero_velocity)
+            velocity_range = ptr->get_pair("initializer_config", "velocity_range");
+    }
+    else
+        throw(RandomInitializerException("Invalid config loader!"));
 }
 
-inline std::uniform_real_distribution<Real>
+inline std::uniform_real_distribution<Real> 
 _uniform_dist_from_pair(const std::pair<Real, Real>& range)
 {
     return std::uniform_real_distribution<Real> (range.first,
@@ -27,7 +41,7 @@ _uniform_dist_from_pair(const std::pair<Real, Real>& range)
 
 void RandomInitializer::set_position(Vectors3D& pos, std::size_t body_count) const
 {
-    auto dist = _uniform_dist_from_pair(config.position_range);
+    auto dist = _uniform_dist_from_pair(position_range);
     for(size_t i=0; i<body_count; i++)
     {
         for(uint8_t k=0; k<3; k++)
@@ -37,12 +51,12 @@ void RandomInitializer::set_position(Vectors3D& pos, std::size_t body_count) con
 
 void RandomInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) const
 {
-    auto dist = _uniform_dist_from_pair(config.velocity_range);
+    auto dist = _uniform_dist_from_pair(velocity_range);
     for(size_t i=0; i<body_count; i++)
     {
         for(uint8_t k=0; k<3; k++)
         {
-            if(config.zero_vel)
+            if(zero_velocity)
                 vel(i, k) = 0;
             else
                 vel(i, k) = dist(gen);
@@ -52,7 +66,7 @@ void RandomInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) con
 
 void RandomInitializer::set_mass(Vector& mass, std::size_t body_count) const
 {
-    auto dist = _uniform_dist_from_pair(config.mass_range);
+    auto dist = _uniform_dist_from_pair(mass_range);
     for(size_t i=0; i<body_count; i++)
     {
         mass(i) = dist(gen);

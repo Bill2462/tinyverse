@@ -1,0 +1,16 @@
+{
+    "initializer_config": {
+        "body1_mass": 1000,
+        "body2_mass": 1,
+        "body2_position": [0, 0, 1],
+        "body2_velocity": [0, 32, 0]
+    },
+
+    "simulation_config":{
+        "initialier": "TWO_BODY_SYSTEM",
+        "universe_size": 2,
+        "timestep": 0.01,
+        "G": 1,
+        "use_softening": false
+    }
+}

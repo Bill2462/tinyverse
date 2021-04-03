@@ -1,18 +1,19 @@
 #ifndef RANDOM_INITIALIZER_HPP_INCLUDED
-#define  RANDOM_INITIALIZER_HPP_INCLUDED
+#define RANDOM_INITIALIZER_HPP_INCLUDED
 
 #include "physics/universe_initializers/base_initializer.hpp"
 #include "physics/common_types.hpp"
-#include "config/config.hpp"
+#include "config/config_loader.hpp"
+#include "exceptions/fatal_error.hpp"
 #include <random>
 
 class RandomInitializer : public UniverseInitializer
 {
 public:
     RandomInitializer();
-    RandomInitializer(const RandomInitializerConfig& config);
-    
-    void set_config(const RandomInitializerConfig& config);
+    RandomInitializer(std::weak_ptr<ConfigurationLoader> config_loader);
+
+    void init(std::weak_ptr<ConfigurationLoader> config_loader) override;
 
     void set_position(Vectors3D& pos, std::size_t body_count) const override;
     void set_velocity(Vectors3D& vel, std::size_t body_count) const override;
@@ -20,8 +21,19 @@ public:
     std::string get_name() const override;
 
 private:
-    RandomInitializerConfig config;
+    std::pair<Real, Real> position_range = {-10, 10};
+    std::pair<Real, Real> mass_range = {0.01, 50};
+    std::pair<Real, Real> velocity_range;
+    bool zero_velocity = true;
+
     mutable std::mt19937 gen;
+};
+
+struct RandomInitializerException : public FatalError
+{
+    RandomInitializerException(const std::string& message):
+    FatalError(message)
+    {}
 };
 
 #endif

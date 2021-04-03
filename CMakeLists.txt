@@ -36,8 +36,6 @@ set(SOURCES
     src/app/init_sim.cpp
     src/renderer/particle_renderer.cpp
     src/shaders/particle_shader.cpp
-    src/config/config_generator.cpp
-    src/config/config_generator_parser.cpp
     ${RESOURCES_CONFIG}
 )
 

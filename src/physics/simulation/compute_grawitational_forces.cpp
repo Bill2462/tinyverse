@@ -28,9 +28,9 @@ Vector3D<Real> Universe::compute_net_grawitational(std::size_t i)
 
         // Compute term that will be multipled by distance vector.
         Real a;
-        if(sim_config.use_softening)
+        if(use_softening)
         {
-            Real div = sim_config.use_softening*sim_config.use_softening + distance*distance;
+            Real div = softening_epsilon*softening_epsilon + distance*distance;
             div = sqrt(div*div*div);
             a = (mass(k))/div;
         }
@@ -43,9 +43,9 @@ Vector3D<Real> Universe::compute_net_grawitational(std::size_t i)
         accumulated_force.z += distace_vec.z*a;
     }
 
-    accumulated_force.x *= m1*-1*sim_config.G;
-    accumulated_force.y *= m1*-1*sim_config.G;
-    accumulated_force.z *= m1*-1*sim_config.G;
+    accumulated_force.x *= m1*-1*G;
+    accumulated_force.y *= m1*-1*G;
+    accumulated_force.z *= m1*-1*G;
 
     return accumulated_force;
 }

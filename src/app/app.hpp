@@ -10,7 +10,6 @@
 
 #include "renderer/particle_renderer.hpp"
 #include "physics/universe.hpp"
-#include "config/config_generator.hpp"
 
 using Object3D = Magnum::SceneGraph::Object<Magnum::SceneGraph::MatrixTransformation3D>;
 using Scene3D  = Magnum::SceneGraph::Scene<Magnum::SceneGraph::MatrixTransformation3D>;
@@ -38,7 +37,7 @@ private:
 
     void init_simulation();
     Universe universe;
-    ConfigurationGenerator config_gen;
+    std::string config_path;
 
     Magnum::Containers::Pointer<ParticleRenderer> particle_renderer;
 

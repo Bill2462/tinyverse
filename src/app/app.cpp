@@ -13,7 +13,6 @@
 
 #include "app.hpp"
 #include "config.h"
-#include "config/config.hpp"
 
 const char* BANNER = "\n"
 "d888888P oo                                                                \n"
@@ -43,16 +42,7 @@ Platform::Application{arguments, NoCreate}
     args.addOption('f', "config", "").setHelp("config", "Path to the configuration file.", "f")
     .parse(arguments.argc, arguments.argv);
 
-    const std::string config_path = args.value<std::string>("config");
-    if(config_path.empty())
-        spdlog::info("No configuration file specified! Will load default simulation.");
-
-    else
-    {
-        spdlog::info(std::string("Loading configuration file '" + config_path + std::string("'...")));
-        config_gen.parse_file(config_path);
-    }
-
+    config_path = args.value<std::string>("config");
     init_simulation();
 
     // Setting up window.

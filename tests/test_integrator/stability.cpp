@@ -4,6 +4,7 @@
 
 #define _USE_MATH_DEFINES
 #include "physics/universe.hpp"
+#include "config/json_loader.hpp"
 #include "../matplotlib_cpp/matplotlibcpp.h"
 #include <cmath>
 #include <vector>
@@ -13,23 +14,12 @@ namespace plt = matplotlibcpp;
 constexpr std::size_t NSTEPS = 100000;
 int main()
 {
+
     // Build universe and initialize a two body system.
     Universe universe;
-    const size_t n_body = 2;
-    universe.set_size(n_body);
-    
-    SimulationConfig sim_config;
-    sim_config.use_softening = false;
-    universe.set_sim_config(sim_config);
-
-    auto initializer = std::make_shared<TwoBodyInitializer>();
-    TwoBodyInitializerConfig universe_initializer_config;
-    universe_initializer_config.body1_mass = 1000;
-    universe_initializer_config.body2_mass = 1;
-    universe_initializer_config.body2_position = {0, 0, 1};
-    universe_initializer_config.body2_velocity = {0, 32, 0};
-    initializer->set_config(universe_initializer_config);
-    universe.apply_initializer(initializer);
+    auto config_loader = std::make_shared<JsonConfigurationLoader>("test_integrator_stability_config.json");
+    const Real G = config_loader->get_real("simulation_config", "G");
+    universe.init(config_loader);
 
     std::vector<Real> x, y, z, energy;
     x.resize(NSTEPS);
@@ -87,8 +77,6 @@ int main()
             pos1.y - pos2.y,
             pos1.z - pos2.z
         };
-
-        const Real G = universe.get_sim_config().G;
 
         energy[i] += -G*((mass1*mass2)/distance_vec.norm2());
     }

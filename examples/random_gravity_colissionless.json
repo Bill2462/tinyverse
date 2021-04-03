@@ -1,20 +1,16 @@
 {
-    "universe_config": {
-        "initializer_type": "RANDOM_INITIALIZER",
-        "universe_size": 1000
-    },
-
-    "random_initializer_config": {
-        "zero_vel": true,
-        "velocity_range": [-10, 10],
+    "initializer_config": {
+        "zero_velocity": true,
         "mass_range": [0.01, 10],
         "position_range": [-10, 10] 
     },
 
     "simulation_config":{
+        "initialier": "RANDOM_INITIALIZER",
+        "universe_size": 1000,
         "timestep": 0.01,
-        "G": 1,
+        "G": 0.1,
         "use_softening": true,
-        "epsilon": 2
+        "softening_epsilon": 2
     }
 }
