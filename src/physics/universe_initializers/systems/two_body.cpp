@@ -27,9 +27,9 @@ void TwoBodyInitializer::init(std::weak_ptr<ConfigurationLoader> config_loader)
         throw(TwoBodyInitializerException("Invalid config loader!"));
 }
 
-void TwoBodyInitializer::set_position(Vectors3D& pos, std::size_t body_count) const
+void TwoBodyInitializer::set_position(Vectors3D& pos) const
 {
-    enforce_body_count(body_count);
+    enforce_body_count(pos.rows());
     pos(0, 0) = 0;
     pos(0, 1) = 0;
     pos(0, 2) = 0;
@@ -38,9 +38,9 @@ void TwoBodyInitializer::set_position(Vectors3D& pos, std::size_t body_count) co
     pos(1, 2) = body2_position.z;
 }
 
-void TwoBodyInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) const
+void TwoBodyInitializer::set_velocity(Vectors3D& vel) const
 {
-    enforce_body_count(body_count);
+    enforce_body_count(vel.rows());
     vel(0, 0) = 0;
     vel(0, 1) = 0;
     vel(0, 2) = 0;
@@ -49,9 +49,9 @@ void TwoBodyInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) co
     vel(1, 2) = body2_velocity.z;
 }
 
-void TwoBodyInitializer::set_mass(Vector& mass, std::size_t body_count) const
+void TwoBodyInitializer::set_mass(Vector& mass) const
 {
-    enforce_body_count(body_count);
+    enforce_body_count(mass.rows());
     mass(0) = body1_mass;
     mass(1) = body2_mass;
 }

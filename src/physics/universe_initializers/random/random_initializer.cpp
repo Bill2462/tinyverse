@@ -39,20 +39,20 @@ _uniform_dist_from_pair(const std::pair<Real, Real>& range)
     range.second);
 }
 
-void RandomInitializer::set_position(Vectors3D& pos, std::size_t body_count) const
+void RandomInitializer::set_position(Vectors3D& pos) const
 {
     auto dist = _uniform_dist_from_pair(position_range);
-    for(size_t i=0; i<body_count; i++)
+    for(size_t i=0; i<pos.rows(); i++)
     {
         for(uint8_t k=0; k<3; k++)
            pos(i, k) = dist(gen);
     }
 }
 
-void RandomInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) const
+void RandomInitializer::set_velocity(Vectors3D& vel) const
 {
     auto dist = _uniform_dist_from_pair(velocity_range);
-    for(size_t i=0; i<body_count; i++)
+    for(size_t i=0; i<vel.rows(); i++)
     {
         for(uint8_t k=0; k<3; k++)
         {
@@ -64,10 +64,10 @@ void RandomInitializer::set_velocity(Vectors3D& vel, std::size_t body_count) con
     }
 }
 
-void RandomInitializer::set_mass(Vector& mass, std::size_t body_count) const
+void RandomInitializer::set_mass(Vector& mass) const
 {
     auto dist = _uniform_dist_from_pair(mass_range);
-    for(size_t i=0; i<body_count; i++)
+    for(size_t i=0; i<mass.rows(); i++)
     {
         mass(i) = dist(gen);
     }

@@ -26,9 +26,9 @@ void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
 
         set_size(size);
 
-        initializer->set_position(position, get_size());
-        initializer->set_velocity(velocity, get_size());
-        initializer->set_mass(mass, get_size());
+        initializer->set_position(position);
+        initializer->set_velocity(velocity);
+        initializer->set_mass(mass);
         spdlog::info(std::string("Universe initialized succesfully using: ") + initializer->get_name());
 
         // Initialize accelerations.

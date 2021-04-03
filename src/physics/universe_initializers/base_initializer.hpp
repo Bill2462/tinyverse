@@ -9,9 +9,9 @@
 struct UniverseInitializer
 {
     virtual void init(std::weak_ptr<ConfigurationLoader> config_loader) = 0;
-    virtual void set_position(Vectors3D& pos, std::size_t body_count) const = 0;
-    virtual void set_velocity(Vectors3D& vel, std::size_t body_count) const = 0;
-    virtual void set_mass(Vector& mass, std::size_t body_count) const = 0;
+    virtual void set_position(Vectors3D& pos) const = 0;
+    virtual void set_velocity(Vectors3D& vel) const = 0;
+    virtual void set_mass(Vector& mass) const = 0;
     virtual std::string get_name() const = 0;
 
     enum class Type

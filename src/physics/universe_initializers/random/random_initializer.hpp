@@ -15,9 +15,9 @@ public:
 
     void init(std::weak_ptr<ConfigurationLoader> config_loader) override;
 
-    void set_position(Vectors3D& pos, std::size_t body_count) const override;
-    void set_velocity(Vectors3D& vel, std::size_t body_count) const override;
-    void set_mass(Vector& mass, std::size_t body_count) const override;
+    void set_position(Vectors3D& pos) const override;
+    void set_velocity(Vectors3D& vel) const override;
+    void set_mass(Vector& mass) const override;
     std::string get_name() const override;
 
 private:
