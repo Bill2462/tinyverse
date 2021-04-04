@@ -4,6 +4,7 @@
 #include <memory>
 #include "physics/common_types.hpp"
 #include "physics/vector_3D.hpp"
+#include "physics/gravity/gravity_solver.hpp"
 #include "config/config_loader.hpp"
 #include "exceptions/fatal_error.hpp"
 
@@ -30,11 +31,11 @@ public:
 private:
     void set_size(size_t n);
 
-    // Pass index of the body and get forces acting on the body.
-    Vector3D<Real> compute_net_grawitational(std::size_t i);
     Real sim_time = 0;
     size_t size = 0;
 
+    std::shared_ptr<GravitySolver> gravity_solver;
+    
     Vectors3D position;
     Vectors3D velocity;
     Vectors3D acceleration;

@@ -19,7 +19,7 @@ void Universe::simulation_step()
 
     for(std::size_t i=0; i<get_size(); i++)
     {
-        const Vector3D<Real> forces = compute_net_grawitational(i);
+        const Vector3D<Real> forces = gravity_solver->compute_net_grawitational_force(i);
         acceleration(i, 0) = forces.x/mass(i);
         acceleration(i, 1) = forces.y/mass(i);
         acceleration(i, 2) = forces.z/mass(i);

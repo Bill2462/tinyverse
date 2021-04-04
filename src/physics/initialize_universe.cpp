@@ -1,6 +1,7 @@
 #include <spdlog/spdlog.h>
 #include "universe.hpp"
 #include "universe_initializers/universe_initializers.hpp"
+#include "physics/gravity/naive/naive_solver.hpp"
 
 void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
 {
@@ -29,16 +30,19 @@ void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
         initializer->set_position(position);
         initializer->set_velocity(velocity);
         initializer->set_mass(mass);
-        spdlog::info(std::string("Universe initialized succesfully using: ") + initializer->get_name());
+
+        gravity_solver = std::make_shared<NaiveGravitySolver>(position, mass, G, use_softening, softening_epsilon);
 
         // Initialize accelerations.
         for(std::size_t i=0; i<get_size(); i++)
         {
-            Vector3D<Real> forces = compute_net_grawitational(i);
+            Vector3D<Real> forces = gravity_solver->compute_net_grawitational_force(i);
             acceleration(i, 0) = forces.x/mass(i);
             acceleration(i, 1) = forces.y/mass(i);
             acceleration(i, 2) = forces.z/mass(i);
         }
+
+        spdlog::info(std::string("Universe initialized succesfully using: ") + initializer->get_name());
     }
     else
         throw(UniverseException("Invalid configuration loader."));
