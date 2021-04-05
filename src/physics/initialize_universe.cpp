@@ -23,6 +23,8 @@ void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
             initializer = UniverseInitializer::build_and_configure(UniverseInitializer::Type::TWO_BODY_SYSTEM, config_loader);
         else if(initializer_str == "RANDOM_INITIALIZER")
             initializer = UniverseInitializer::build_and_configure(UniverseInitializer::Type::RANDOM_INITIALIZER, config_loader);
+        else if(initializer_str == "DISC")
+            initializer = UniverseInitializer::build_and_configure(UniverseInitializer::Type::DISC, config_loader);
         else
             throw(UniverseException("Invalid universe initializer name."));
 

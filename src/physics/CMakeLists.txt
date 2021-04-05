@@ -7,6 +7,7 @@ set(SOURCES
     initialize_universe.cpp
     universe_initializers/random/random_initializer.cpp
     universe_initializers/systems/two_body.cpp
+    universe_initializers/systems/disc.cpp
     gravity/naive/naive_solver.cpp
     gravity/barnes_hut/barnes_hut.cpp
     universe_initializers/initializer_factory.cpp

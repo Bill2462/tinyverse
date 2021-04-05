@@ -11,6 +11,9 @@ std::shared_ptr<UniverseInitializer> UniverseInitializer::build_and_configure
 
         case UniverseInitializer::Type::RANDOM_INITIALIZER:
         return std::make_shared<RandomInitializer>(config_loader);
+
+        case UniverseInitializer::Type::DISC:
+        return std::make_shared<DiscInitializer>(config_loader);
     }
 
     return std::shared_ptr<UniverseInitializer>(nullptr);

@@ -17,6 +17,7 @@ struct UniverseInitializer
     enum class Type
     {
         TWO_BODY_SYSTEM,
+        DISC,
         RANDOM_INITIALIZER
     };
 
