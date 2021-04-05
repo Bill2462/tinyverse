@@ -10,7 +10,8 @@ struct GravitySolver
 
     enum class Type
     {
-        NAIVE
+        NAIVE,
+        BARNES_HUT
     };
 
     virtual Type get_type() const = 0;

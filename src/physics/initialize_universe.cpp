@@ -2,6 +2,7 @@
 #include "universe.hpp"
 #include "universe_initializers/universe_initializers.hpp"
 #include "physics/gravity/naive/naive_solver.hpp"
+#include "physics/gravity/barnes_hut/barnes_hut.hpp"
 
 void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
 {
@@ -31,7 +32,18 @@ void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
         initializer->set_velocity(velocity);
         initializer->set_mass(mass);
 
-        gravity_solver = std::make_shared<NaiveGravitySolver>(position, mass, G, use_softening, softening_epsilon);
+        const std::string gravity_solver_str = ptr->get_string("simulation_config", "gravity_solver");
+        if(gravity_solver_str == "NAIVE")
+            gravity_solver = std::make_shared<NaiveGravitySolver>(position, mass, G, use_softening, softening_epsilon);
+        else if(gravity_solver_str == "BARNES-HUT")
+        {
+            const Real max_universe_size = ptr->get_real("simulation_config", "max_universe_size");
+            const Real theta = ptr->get_real("simulation_config", "theta");
+            gravity_solver = std::make_shared<BarnesHutGravitySolver>(position, mass, G, use_softening,
+            softening_epsilon, max_universe_size, theta);
+        }
+        else
+            throw(UniverseException("Invalid gravity solver name."));
 
         // Initialize accelerations.
         for(std::size_t i=0; i<get_size(); i++)

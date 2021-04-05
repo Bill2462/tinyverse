@@ -8,6 +8,7 @@ set(SOURCES
     universe_initializers/random/random_initializer.cpp
     universe_initializers/systems/two_body.cpp
     gravity/naive/naive_solver.cpp
+    gravity/barnes_hut/barnes_hut.cpp
     universe_initializers/initializer_factory.cpp
     ../exceptions/fatal_error.cpp
     ../config/json_loader.cpp

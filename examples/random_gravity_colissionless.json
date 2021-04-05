@@ -2,15 +2,18 @@
     "initializer_config": {
         "zero_velocity": true,
         "mass_range": [0.01, 10],
-        "position_range": [-10, 10] 
+        "position_range": [-30, 30]
     },
 
     "simulation_config":{
         "initialier": "RANDOM_INITIALIZER",
-        "universe_size": 1000,
+        "universe_size": 10000,
         "timestep": 0.01,
-        "G": 0.1,
+        "G": 1,
         "use_softening": true,
-        "softening_epsilon": 2
+        "softening_epsilon": 2,
+        "gravity_solver": "BARNES-HUT",
+        "max_universe_size": 10000,
+        "theta": 2
     }
 }

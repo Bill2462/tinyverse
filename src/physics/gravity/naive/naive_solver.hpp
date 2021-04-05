@@ -2,7 +2,6 @@
 #define NAIVE_GRAVITY_SOLVER_HPP_INCLUDED
 
 #include "physics/gravity/gravity_solver.hpp"
-#include <functional>
 
 class NaiveGravitySolver : public GravitySolver
 {
