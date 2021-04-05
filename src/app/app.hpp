@@ -38,6 +38,7 @@ private:
     void init_simulation();
     Universe universe;
     std::string config_path;
+    bool simulation_running = false;
 
     Magnum::Containers::Pointer<ParticleRenderer> particle_renderer;
 

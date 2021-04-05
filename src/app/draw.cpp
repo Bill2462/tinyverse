@@ -22,5 +22,7 @@ void TinyverseApp::drawEvent()
 
     swapBuffers();
     redraw();
-    universe.simulation_step();
+    
+    if(simulation_running)
+        universe.simulation_step();
 }

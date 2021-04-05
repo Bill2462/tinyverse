@@ -22,6 +22,9 @@ void TinyverseApp::viewportEvent(ViewportEvent& event)
 
 void TinyverseApp::keyPressEvent(KeyEvent& event)
 {
+    if(event.key() == KeyEvent::Key::Space)
+        simulation_running ^= true;
+    
     event.setAccepted();
 }
 
