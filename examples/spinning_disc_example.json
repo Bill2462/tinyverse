@@ -1,19 +1,19 @@
 {
     "initializer_config": {
-        "mass_range": [0.01, 0.7],
-        "radius_range": [6, 30],
+        "mass_range": [0.3, 0.3],
+        "radius_range": [10, 20],
         "center_body_mass": 40000
     },
 
     "simulation_config":{
         "initialier": "DISC",
-        "universe_size": 30000,
-        "timestep": 0.01,
+        "universe_size": 10000,
+        "timestep": 0.005,
         "G": 1,
         "use_softening": true,
-        "softening_epsilon": 2,
+        "softening_epsilon": 0.1,
         "gravity_solver": "BARNES-HUT",
         "max_universe_size": 10000,
-        "theta": 2
+        "theta": 0.5
     }
 }

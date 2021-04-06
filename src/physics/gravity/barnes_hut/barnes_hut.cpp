@@ -176,7 +176,6 @@ void BarnesHutGravitySolver::insert_body(TreeNode* node, const Vector3D<Real>& p
             pos.y*mass,
             pos.z*mass
         };
-        node->mass = mass;
         node->center_of_mass = pos;
         return;
     }
@@ -199,6 +198,19 @@ void BarnesHutGravitySolver::insert_body(TreeNode* node, const Vector3D<Real>& p
             break;
         }
     }
+
+    // Update center of mass.
+    node->weighted_sum_of_mass = {
+            node->weighted_sum_of_mass.x + pos.x*mass,
+            node->weighted_sum_of_mass.y + pos.y*mass,
+            node->weighted_sum_of_mass.z + pos.z*mass
+    };
+    node->mass += mass;
+    node->center_of_mass = {
+            node->weighted_sum_of_mass.x / node->mass,
+            node->weighted_sum_of_mass.y / node->mass,
+            node->weighted_sum_of_mass.z / node->mass
+    };
 
     // Now place the body that we are trying to add.
     // If the body that was previusly in this node was placed in the same children then
@@ -232,9 +244,9 @@ Vector3D<Real> BarnesHutGravitySolver::compute_net_grawitational_force(std::size
 
     const Real body_mass = (*mass)(body_index);
     
-    force.x *= -1*body_mass*G;
-    force.y *= -1*body_mass*G;
-    force.z *= -1*body_mass*G;
+    force.x *= static_cast<Real>(-1)*body_mass*G;
+    force.y *= static_cast<Real>(-1)*body_mass*G;
+    force.z *= static_cast<Real>(-1)*body_mass*G;
     
     return force;
 }
@@ -242,18 +254,18 @@ Vector3D<Real> BarnesHutGravitySolver::compute_net_grawitational_force(std::size
 void BarnesHutGravitySolver::add_force(const TreeNode* node, const Vector3D<Real>& pos,
 std::size_t body_index, Vector3D<Real>& force) const
 {
+    // Compute distance and distance vector to the current nodes center of mass.
+    const Vector3D<Real> distace_vec = {
+        pos.x - node->center_of_mass.x,
+        pos.y - node->center_of_mass.y,
+        pos.z - node->center_of_mass.z,
+     };
+        
+    const Real distance = distace_vec.norm2();
+
     // If node is internal then check if we should recursively got further down the tree.
     if(node->is_internal)
     {
-        // Compute distance and distance vector to the current nodes center of mass.
-        const Vector3D<Real> distace_vec = {
-            pos.x - node->center_of_mass.x,
-            pos.y - node->center_of_mass.y,
-            pos.z - node->center_of_mass.z,
-        };
-        
-        const Real distance = distace_vec.norm2();
-
         // If the value of s/d is larger than threshold then add explore gravity from the children.
         if(node->cube_size/distance > theta)
         {
@@ -263,21 +275,14 @@ std::size_t body_index, Vector3D<Real>& force) const
             return;
         }
     }
-
-    if(node->body_index == static_cast<long long>(body_index))
-        return;
-    
-    if(node->body_index == -1)
-        return;
-    
-    // Compute distance and distance vector to the current nodes center of mass.
-    const Vector3D<Real> distace_vec = {
-        pos.x - node->center_of_mass.x,
-        pos.y - node->center_of_mass.y,
-        pos.z - node->center_of_mass.z,
-    };
+    else
+    {
+        if(node->body_index == static_cast<long long>(body_index))
+            return;
         
-    const Real distance = distace_vec.norm2();
+        if(node->body_index == -1)
+            return;
+    }
 
     // Otherwise use nodes center of mass to compute gravity.
     Real a;
