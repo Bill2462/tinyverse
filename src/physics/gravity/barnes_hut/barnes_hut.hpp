@@ -37,8 +37,7 @@ class BarnesHutGravitySolver : public GravitySolver
 {
 public:
     BarnesHutGravitySolver(const Vectors3D& position, const Vector& mass,
-    Real G, bool use_softening, Real softening_epsilon = 2,
-    Real max_universe_size = 10000, Real theta=0.5);
+    Real G, bool use_softening, Real softening_epsilon=2, Real theta=0.5);
 
     // Rebuilds tree from scratch.
     void rebuild_tree();
@@ -75,6 +74,9 @@ private:
     // That splits the node recursively if them until they end up in the separate children.
     void insert_body(TreeNode* node, const Vector3D<Real>& pos, Real mass, std::size_t body_index);
     void add_force(const TreeNode* node, const Vector3D<Real>& pos, std::size_t body_index, Vector3D<Real>& force) const;
+    
+    void update_max_universe_size();
+    Real max_universe_size;
 
     const Vectors3D* position;
     const Vector* mass;
@@ -82,9 +84,9 @@ private:
     const bool use_softening;
     const Real softening_epsilon;
     const std::size_t nbody;
-    const Real max_universe_size;
     const Real theta;
-    const Vector3D<Real> universe_bottom_left_corner;
+
+    Vector3D<Real> universe_bottom_left_corner;
 };
 
 #endif

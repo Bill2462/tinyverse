@@ -1,23 +1,44 @@
 #include "barnes_hut.hpp"
+#include <iostream>
+#include <string>
 
 BarnesHutGravitySolver::BarnesHutGravitySolver(const Vectors3D& position, const Vector& mass,
-Real G, bool use_softening, Real softening_epsilon, Real max_universe_size, Real theta):
+Real G, bool use_softening, Real softening_epsilon, Real theta):
     position(&position),
     mass(&mass),
     G(G),
     use_softening(use_softening),
     softening_epsilon(softening_epsilon),
     nbody(position.rows()),
-    max_universe_size(max_universe_size),
-    theta(theta),
-    universe_bottom_left_corner({-max_universe_size/2, -max_universe_size/2, -max_universe_size/2})
+    theta(theta)
 {
+    update_max_universe_size();;
     construct_tree();
+}
+
+void BarnesHutGravitySolver::update_max_universe_size()
+{
+    max_universe_size = 0;
+    for(std::size_t i=0; i<nbody; i++)
+    {
+        Vector3D<Real> pos;
+        pos.x = (*position)(i, 0);
+        pos.y = (*position)(i, 1);
+        pos.z = (*position)(i, 2);
+
+        Real r = pos.norm2();
+        if(r > max_universe_size)
+            max_universe_size = r;
+    }
+
+    max_universe_size *= static_cast<float>(1.42);
+    universe_bottom_left_corner = {-max_universe_size/2, -max_universe_size/2, -max_universe_size/2};
 }
 
 void BarnesHutGravitySolver::rebuild_tree()
 {
     destroy_tree();
+    update_max_universe_size();
     construct_tree();
 }
 
@@ -234,9 +255,6 @@ Vector3D<Real> BarnesHutGravitySolver::compute_net_grawitational_force(std::size
         (*position)(body_index, 1),
         (*position)(body_index, 2)
     };
-
-    if(!is_inside_node(tree_root, body_pos))
-       return {0, 0, 0};
     
     Vector3D<Real> force = {0,0,0};
 

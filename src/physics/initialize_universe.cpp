@@ -39,10 +39,9 @@ void Universe::init(std::weak_ptr<ConfigurationLoader> config_loader)
             gravity_solver = std::make_shared<NaiveGravitySolver>(position, mass, G, use_softening, softening_epsilon);
         else if(gravity_solver_str == "BARNES-HUT")
         {
-            const Real max_universe_size = ptr->get_real("simulation_config", "max_universe_size");
             const Real theta = ptr->get_real("simulation_config", "theta");
             gravity_solver = std::make_shared<BarnesHutGravitySolver>(position, mass, G, use_softening,
-            softening_epsilon, max_universe_size, theta);
+            softening_epsilon, theta);
         }
         else
             throw(UniverseException("Invalid gravity solver name."));
